@@ -51,10 +51,12 @@ RUN wget https://public.njzjz.win/AmberTools23.10jan24.tar.bz2 -O AmberTools23.1
     && cd ../.. \
     && rm -rf amber22_src
 
-ENV PATH="${AMBERHOME}/bin:${PATH}"
+ENV PATH="${AMBERHOME}/bin:/usr/lib64/openmpi/bin:${PATH}"
 ENV LD_LIBRARY_PATH="${AMBERHOME}/lib:${AMBERHOME}/lib64:${LD_LIBRARY_PATH}"
 ENV PERL5LIB="${AMBERHOME}/lib/perl:${PERL5LIB}"
 ENV QUICK_BASIS="${AMBERHOME}/AmberTools/src/quick/basis"
+ENV OMPI_ALLOW_RUN_AS_ROOT=1
+ENV OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 
 LABEL org.opencontainers.image.source=https://github.com/njzjz/docker-amberdprc
 LABEL org.opencontainers.image.title="Amber DPRc"

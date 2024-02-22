@@ -1,9 +1,9 @@
 FROM almalinux:8
 
-# install CUDA 11.8
+# install CUDA 12.3
 RUN dnf -y install 'dnf-command(config-manager)' \
     && dnf config-manager --add-repo http://developer.download.nvidia.com/compute/cuda/repos/rhel8/x86_64/cuda-rhel8.repo \
-    && dnf -y install cuda-libraries-11-8 cuda-nvtx-11-8 libcublas-11-8 cuda-compat-11-8 cuda-cudart-11-8 libcudnn8
+    && dnf -y install cuda-libraries-12-3 cuda-nvtx-12-3 libcublas-12-3 cuda-compat-12-3 cuda-cudart-12-3 libcudnn8
 
 ENV AMBERHOME="/amber"
 
@@ -28,15 +28,15 @@ RUN wget https://codeload.github.com/grimme-lab/xtb/zip/0fb151dceb19b8df9f601278
     && rm -rf xtb.zip xtb-0fb151dceb19b8df9f6012789cf7d2dd6e4a6cd2
 
 # download deepmd-kit
-RUN wget https://github.com/deepmodeling/deepmd-kit/releases/download/v2.2.7/libdeepmd_c.tar.gz -O libdeepmd_c.tar.gz \
+RUN wget https://github.com/deepmodeling/deepmd-kit/releases/download/v2.2.9/libdeepmd_c.tar.gz -O libdeepmd_c.tar.gz \
     && tar -xzf libdeepmd_c.tar.gz -C ${AMBERHOME} --strip-components=1 \
     && rm libdeepmd_c.tar.gz
 
 # compile AMBER
-RUN wget https://public.njzjz.win/AmberTools23.10jan24.tar.bz2 -O AmberTools23.10jan24.tar.bz2 \
-    && tar -xjf AmberTools23.10jan24.tar.bz2 \
-    && rm AmberTools23.10jan24.tar.bz2 \
-    && cd amber22_src/build \
+RUN wget https://public.njzjz.win/AmberTools24.22feb24.tar.bz2 -O AmberTools.tar.bz2 \
+    && tar -xjf AmberTools.tar.bz2 \
+    && rm AmberTools.tar.bz2 \
+    && cd amber24_src/build \
     && cmake .. \
              -DCMAKE_INSTALL_PREFIX=${AMBERHOME} \
              -DCMAKE_PREFIX_PATH="/usr/lib64/openmpi;${AMBERHOME}" \
@@ -49,7 +49,7 @@ RUN wget https://public.njzjz.win/AmberTools23.10jan24.tar.bz2 -O AmberTools23.1
              -DUSE_DEEPMDKIT=ON \
     && cmake --build . --target install \
     && cd ../.. \
-    && rm -rf amber22_src
+    && rm -rf amber24_src
 
 ENV PATH="${AMBERHOME}/bin:/usr/lib64/openmpi/bin:${PATH}"
 ENV LD_LIBRARY_PATH="${AMBERHOME}/lib:${AMBERHOME}/lib64:${LD_LIBRARY_PATH}"

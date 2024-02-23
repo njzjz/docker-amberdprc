@@ -7,7 +7,11 @@ on:
   pull_request:
 jobs:
   build_docker:
+    name: Build Docker image
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
       - uses: actions/checkout@v4
       - name: Log in to the Container registry

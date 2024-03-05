@@ -6,6 +6,7 @@ RUN dnf -y install 'dnf-command(config-manager)' \
     && dnf -y install cuda-libraries-12-3 cuda-nvtx-12-3 libcublas-12-3 cuda-compat-12-3 cuda-cudart-12-3 libcudnn8
 
 ENV AMBERHOME="/amber"
+ENV XTB_VERSION=6.7.0
 
 RUN dnf --enablerepo=powertools -y install tcsh make \
         gcc gcc-gfortran gcc-c++ \
@@ -17,15 +18,15 @@ RUN dnf --enablerepo=powertools -y install tcsh make \
         openblas-devel
 
 # build xtb
-RUN wget https://codeload.github.com/grimme-lab/xtb/zip/0fb151dceb19b8df9f6012789cf7d2dd6e4a6cd2 -O xtb.zip \
+RUN wget https://codeload.github.com/grimme-lab/xtb/zip/v${XTB_VERSION} -O xtb.zip \
     && unzip xtb.zip \
-    && mkdir xtb-0fb151dceb19b8df9f6012789cf7d2dd6e4a6cd2/build \
-    && cd xtb-0fb151dceb19b8df9f6012789cf7d2dd6e4a6cd2/build \
+    && mkdir xtb-${XTB_VERSION}/build \
+    && cd xtb-${XTB_VERSION}/build \
     && cmake .. -DCMAKE_INSTALL_PREFIX=${AMBERHOME} \
                 -DINSTALL_MODULES=ON \
     && cmake --build . --target install \
     && cd ../.. \
-    && rm -rf xtb.zip xtb-0fb151dceb19b8df9f6012789cf7d2dd6e4a6cd2
+    && rm -rf xtb.zip xtb-${XTB_VERSION}
 
 # download deepmd-kit
 RUN wget https://github.com/deepmodeling/deepmd-kit/releases/download/v2.2.9/libdeepmd_c.tar.gz -O libdeepmd_c.tar.gz \

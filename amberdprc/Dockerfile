@@ -1,9 +1,9 @@
+FROM almalinux:8
+
 ARG CUDA_VERSION=12-4
 ARG XTB_VERSION=6.7.0
 ARG DEEPMD_VERSION=2.2.9
 ARG AMBER_VERSION=24_rc2
-
-FROM almalinux:8
 
 # install CUDA
 RUN dnf -y install 'dnf-command(config-manager)' \
